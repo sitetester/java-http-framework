@@ -25,7 +25,6 @@ public class Server {
             ioException.printStackTrace();
         }
 
-
         while (true) {
             assert serverSocket != null;
             var socket = serverSocket.accept();

@@ -1,6 +1,5 @@
 package framework.route;
 
-import app.controller.BlogsController;
 import framework.request.Request;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,7 @@ public class RouteResolverTest {
                 .setMethod("GET")
                 .setUri("/blogs");
 
-        var rr = new RouteResolver();
-        assert rr.ResolveRoute(request) == BlogsController.class;
+        var routeResolver = new RouteResolver();
+        assert routeResolver.ResolveRoute(request).equals("app.controller.BlogsController:index");
     }
 }

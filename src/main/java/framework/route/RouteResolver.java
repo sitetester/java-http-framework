@@ -7,11 +7,12 @@ import java.util.Objects;
 
 public class RouteResolver {
 
-    // apply check in configuration
+    // TODO: apply check in configuration
     private final String controllersPath = System.getProperty("user.dir") + "/src/main/java/app/controller";
 
-    public Class<?> ResolveRoute(Request request) throws ClassNotFoundException {
+    public ResolvedRoute ResolveRoute(Request request) throws ClassNotFoundException {
 
+        var resolvedRoute = new ResolvedRoute();
         File folder = new File(controllersPath);
         File[] listOfFiles = folder.listFiles();
 
@@ -26,11 +27,13 @@ public class RouteResolver {
                     Route annotation = Class.forName(name).getAnnotation(framework.route.Route.class);
 
                     if (annotation.path().equals(request.getUri())) {
-                        return Class.forName(name);
+                        // TODO: check for method
+                        return resolvedRoute.setController(name).setMethod("index");
                     }
                 }
             }
         }
-        return null;
+
+        return resolvedRoute;
     }
 }
