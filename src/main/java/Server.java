@@ -33,6 +33,7 @@ public class Server {
             SimpleDateFormat time = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             System.out.println("\nNew client connected at: " + time.format(new Date()));
 
+            // start in a new thread
             new ClientHandler(socket).start();
         }
     }
