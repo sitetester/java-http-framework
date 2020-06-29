@@ -1,0 +1,13 @@
+jar cf jar_test.jar *
+
+
+mvn install:install-file \
+   -Dfile=/Users/khalid/IdeaProjects/java-http-framework/jar_test.jar  \
+   -DgroupId=org.example \
+   -DartifactId=java-http-framework \
+   -Dversion=1.0-SNAPSHOT \
+   -Dpackaging=jar \
+   -DgeneratePom=true
+
+mvn install (anywhere in console) SEE example in /Users/khalid/IdeaProjects/temp/jar_include_test
+
