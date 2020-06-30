@@ -1,6 +1,7 @@
 package framework.request;
 
 import framework.response.Response;
+import framework.response.ResponseWriter;
 import framework.route.ResolvedRoute;
 import framework.route.RouteResolver;
 
@@ -12,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class ClientHandler extends Thread {
 
@@ -52,18 +52,7 @@ public class ClientHandler extends Thread {
     private void sendResponse(Response response) throws IOException {
 
         PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-        // TODO: change 'success' accordingly
-
-        String format = String.format("HTTP/1.1 %s %s", response.getCode(), "Success");
-        writer.println(format);
-
-        for (Map.Entry<String, String> entry : response.getHeaders().entrySet()) {
-            writer.println(entry.getKey() + ": " + entry.getValue());
-        }
-
-        writer.println("");
-
-        writer.println(response.getContents());
+        new ResponseWriter(writer, response).writeResponse();
         bufferedReader.close();
     }
 
