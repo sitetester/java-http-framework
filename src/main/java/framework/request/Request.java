@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Request {
 
     // methods
-    private String GET = "GET111";
+    private String GET = "GET";
     private String POST = "POST";
     private String PUT = "PUT";
     private String DELETE = "DELETE";
