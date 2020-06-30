@@ -4,9 +4,6 @@ import java.util.HashMap;
 
 public class Request {
 
-    private String xyz;
-    private final int num = 111;
-
     // methods
     private String GET = "GET111";
     private String POST = "POST";
