@@ -36,14 +36,12 @@ public class RouteResolver {
                         var uriParts = request.getUri().split("/");
 
                         if (annotation.path().substring(1).equals(uriParts[1])) {
-                            resolvedRoute.setController(controllerFQN);
-
                             String methodName = this.checkMethodRoute(controllerFQN, uriParts);
                             if (methodName.equals("")) {
                                 throw new IllegalArgumentException("No method level route found for URI" + request.getUri());
                             }
 
-                            resolvedRoute.setMethod(methodName);
+                            resolvedRoute.setController(controllerFQN).setMethod(methodName);
                         }
                     }
                 }
