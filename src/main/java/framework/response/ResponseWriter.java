@@ -16,20 +16,20 @@ public class ResponseWriter {
 
     public void writeResponse() {
 
-        writeStatusLine(writer, response);
-        writeHeaders(writer, response);
+        writeStatusLine();
+        writeHeaders();
         writer.println();
         writer.println(response.getContents());
     }
 
-    private void writeStatusLine(PrintWriter writer, Response response) {
+    private void writeStatusLine() {
 
         // TODO: change 'success' accordingly
         String format = String.format("HTTP/1.1 %s %s", response.getCode(), "Success");
         writer.println(format);
     }
 
-    private void writeHeaders(PrintWriter writer, Response response) {
+    private void writeHeaders() {
 
         for (Map.Entry<String, String> entry : response.getHeaders().entrySet()) {
             writer.println(entry.getKey() + ": " + entry.getValue());

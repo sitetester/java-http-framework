@@ -2,15 +2,11 @@ package framework.request;
 
 import framework.response.Response;
 import framework.response.ResponseWriter;
-import framework.route.ResolvedRoute;
-import framework.route.RouteResolver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -26,20 +22,7 @@ public class ClientHandler extends Thread {
     public void run() {
 
         var request = new RequestParser().parseRequest(readLines());
-
-        ResolvedRoute resolvedRoute = new ResolvedRoute();
-        try {
-            resolvedRoute = new RouteResolver().ResolveRoute(request);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Response response = null;
-        try {
-            response = invokeControllerMethod(resolvedRoute);
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        Response response = new RequestHandler().handleRequest(request);
 
         assert response != null;
         try {
@@ -47,26 +30,6 @@ public class ClientHandler extends Thread {
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
-    }
-
-    private void sendResponse(Response response) throws IOException {
-
-        PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-        new ResponseWriter(writer, response).writeResponse();
-        bufferedReader.close();
-    }
-
-    private Response invokeControllerMethod(ResolvedRoute resolvedRoute)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-
-        String cClassName = resolvedRoute.getController();
-        Class<?> cClass = Class.forName(cClassName);
-        Object obj = cClass.newInstance();
-
-        String mName = resolvedRoute.getMethod();
-        Method cMName = obj.getClass().getMethod(mName);
-
-        return (Response) cMName.invoke(obj);
     }
 
     private ArrayList<String> readLines() {
@@ -98,5 +61,12 @@ public class ClientHandler extends Thread {
         }
 
         return lines;
+    }
+
+    private void sendResponse(Response response) throws IOException {
+
+        PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+        new ResponseWriter(writer, response).writeResponse();
+        bufferedReader.close();
     }
 }
