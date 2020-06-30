@@ -14,15 +14,15 @@ public class RouteResolver {
     public ResolvedRoute ResolveRoute(Request request) throws ClassNotFoundException {
 
         var resolvedRoute = new ResolvedRoute();
+
         File folder = new File(controllersPath);
         File[] listOfFiles = folder.listFiles();
 
         for (int i = 0; i < Objects.requireNonNull(listOfFiles).length; i++) {
-            if (listOfFiles[i].isFile()) {
-                String controllerNameWithExt = listOfFiles[i].getName();
-                String controllerName = controllerNameWithExt.substring(0, controllerNameWithExt.indexOf("."));
+            File file = listOfFiles[i];
 
-                String controllerFQN = "app.controller." + controllerName;
+            if (file.isFile()) {
+                String controllerFQN = getControllerFQN(file);
 
                 if (Class.forName(controllerFQN).isAnnotationPresent(framework.route.Route.class)) {
                     Route annotation = Class.forName(controllerFQN).getAnnotation(framework.route.Route.class);
@@ -65,5 +65,13 @@ public class RouteResolver {
         }
 
         return "";
+    }
+
+    private String getControllerFQN(File file) {
+
+        String controllerNameWithExt = file.getName();
+        String controllerName = controllerNameWithExt.substring(0, controllerNameWithExt.indexOf("."));
+
+        return "app.controller." + controllerName;
     }
 }
