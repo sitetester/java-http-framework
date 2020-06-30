@@ -5,7 +5,6 @@ public class ResolvedRoute {
     private String controller;
     private String method;
 
-
     public String getController() {
         return controller;
     }
