@@ -18,7 +18,6 @@ public class RequestParser {
     }
 
     private void parseRequestLine(String requestLine, Request request) {
-
         String[] parts = requestLine.split("\\s");
         if (parts.length != 3) {
             throw new IllegalArgumentException(String.format("Invalid request line %s", requestLine));

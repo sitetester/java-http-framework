@@ -8,17 +8,17 @@ import framework.route.Route;
 @Route(path = "/blogs")
 public class BlogsController extends AbstractController {
 
-    public Response index() {
+    public Response index(Request request) {
         return new Response("blogs: INDEX page.");
     }
 
     @Route(path = "/list")
-    public Response list() {
+    public Response list(Request request) {
         return new Response("Listing page!");
     }
 
 
-    @Route(path = "/{id[\\d]}")
+    @Route(path = "/{id[\\d+]}")
     public Response byIdInt(Request request) {
         return new Response(String.format("%d page!", 123));
     }

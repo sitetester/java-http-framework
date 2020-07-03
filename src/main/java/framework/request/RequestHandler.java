@@ -21,7 +21,7 @@ public class RequestHandler {
 
         Response response = null;
         try {
-            response = invokeControllerMethod(resolvedRoute);
+            response = invokeControllerMethod(resolvedRoute, request);
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class RequestHandler {
         return response;
     }
 
-    private Response invokeControllerMethod(ResolvedRoute resolvedRoute)
+    private Response invokeControllerMethod(ResolvedRoute resolvedRoute, Request request)
             throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
 
         String controller = resolvedRoute.getController();
@@ -37,8 +37,8 @@ public class RequestHandler {
         Object obj = controllerClass.newInstance();
 
         String method = resolvedRoute.getMethod();
-        Method methodName = obj.getClass().getMethod(method);
+        Method methodName = obj.getClass().getMethod(method, request.getClass());
 
-        return (Response) methodName.invoke(obj);
+        return (Response) methodName.invoke(obj, request);
     }
 }
